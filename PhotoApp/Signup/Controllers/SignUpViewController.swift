@@ -21,8 +21,12 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let customSignupPresenter = signupPresenter {
+        if signupPresenter == nil {
             let signupModelValidator = SignupFormModelValidator()
+            let webService = SignupWebService(urlString: SignupConstants.signupURLString)
+            signupPresenter = SignupPresenter(formModelValidator: signupModelValidator,
+                                                    webservice: webService,
+                                                    delegate: self)
         }
     }
     
@@ -33,5 +37,15 @@ class SignUpViewController: UIViewController {
                                               password: passwordTextField.text ?? "",
                                               repeatPassword: repeatPasswordTextField.text ?? "")
         signupPresenter?.processUserSignup(formModel: signupFormModel)
+    }
+}
+
+extension SignUpViewController: SignupViewDelegateProtocol {
+    func successfullSignup() {
+        // TODO:
+    }
+    
+    func errorHandler(error: SignupError) {
+        // TODO:
     }
 }
